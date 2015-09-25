@@ -59,7 +59,7 @@ function FrameHandler(options){
 		//add one to iteration after each time this function has been run
 		numberIterations++;
 		//stop running this function after 200 iterations
-		if(numberIterations > 100) window.clearInterval(intervalId);
+		if(numberIterations > 2000) window.clearInterval(intervalId);
 
 		//Get epoch time in ms when we start going through, if doing verbose logging.
 		if(options.verbose){ time = new Date().getTime(); }

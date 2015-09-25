@@ -43,22 +43,22 @@ $(document).ready(function(){
 		//top--how much movement towards the top is in the frame
 		//twist--how much twistiness is in the frame
 
-		speedUp = speedUp + obj.top;
-		speedSide = speedSide + obj.left;
-		rotateSpeed = rotateSpeed + obj.twist;
+		speedUp = speedUp + obj.top * .07;
+		speedSide = speedSide + obj.left * .07;
+		// rotateSpeed = rotateSpeed + obj.twist * .07;
 
 		top = top + speedUp;
 		side = side + speedSide;
-		rotate = rotate + rotateSpeed;
+		// rotate = rotate + rotateSpeed;
 
 		if (top < 0){top = 0;}
 		if (top > 560){top = 560;}
 		if (side < 0){side=0;}
 		if (side > 1180){side = 1180}
 
-		document.getElementById("temp").style.top = top+"px";
-		document.getElementById("temp").style.left = side+"px";
-		document.getElementById("temp").style.transform = "rotate("+Math.round(rotate)+"deg)";
+		// document.getElementById("temp").style.top = top+"px";
+		// document.getElementById("temp").style.left = side+"px";
+		// document.getElementById("temp").style.transform = "rotate("+Math.round(rotate)+"deg)";
 
 
 	}
@@ -123,7 +123,7 @@ $(document).ready(function(){
 </canvas>
 
 
-<img id="temp" style="position: absolute; left: 600px; top: 200px;" src="img/Chrome_logo.png"></img>
+<!-- <img id="temp" style="position: absolute; left: 600px; top: 200px;" src="img/Chrome_logo.png"></img> -->
 
 
 

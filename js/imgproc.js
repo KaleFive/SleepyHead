@@ -172,133 +172,133 @@ var imgproc = {
 
 	},
 
-	color: {
-
-		//Takes imageData, imageData, and steps, and returns as many columns from that as
-		//one can make with the width between them of steps.
-		cols: function(imgDataA, steps) {
-			if(!!imgDataA ){
-				//Pulling misc data.
-				var size = imgDataA.data.length;
-				var width = imgDataA.width;
-				var height = imgDataA.height;
-				var dataA = imgDataA.data;
-
-				//Vertical columns that we will attend to.
-				//Build the array we will return.
-				var cols = arrayOfFill( Math.ceil(width / steps) , function(){return []} );
-				var currentCol = 0;
-				var xStep = steps*4;
-				var maxWidth = width / steps;
-				for(var x = 0; x < size; x=x+xStep){
-					var r = Math.abs(dataA[x  ]);
-					var g = Math.abs(dataA[x+1]);
-					var b = Math.abs(dataA[x+2]);
-					cols[currentCol].push(r);
-					cols[currentCol].push(g);
-					cols[currentCol].push(b);
-					currentCol++;
-					if (currentCol >= maxWidth){currentCol = 0;}
-				}
-				//Returning it all.  Fix this later.
-				return cols;
-			}
-			return null
-		},
-
-		//Takes imageData, imageData, and steps, and returns as many columns from that, greyscale, on a 0-765 scale, as
-		//one can make with the width between them of steps.
-		rows: function(imgDataA, steps){
-			if(!!imgDataA){
-				//Pulling misc data.
-				var size = imgDataA.data.length;
-				var width = imgDataA.width;
-				var height = imgDataA.height;
-				var dataA = imgDataA.data;
-
-				//Vertical columns that we will attend to.
-				//Build the array we will return.
-				var rows = [];
-				var currentRow = 0;
-
-				//For the loop specifically.
-				var xStep = 4;
-				var yStep = steps*4*width;
-				var xSize = width * 4;
-				var ySize = size;
-
-				for(var y = 0; y < ySize; y=y+yStep){
-					rows.push([]);
-					for(var x = 0; x < xSize; x=x+xStep){
-						var spot = x + y;
-						var r = Math.abs(dataA[spot  ] );
-						var g = Math.abs(dataA[spot+1] );
-						var b = Math.abs(dataA[spot+2] );
-						rows[currentRow].push(r);
-						rows[currentRow].push(g);
-						rows[currentRow].push(b);
-					}
-					currentRow++;
-				}
-				//Returning it all.  Fix this later.
-				return rows;
-			}
-			return null
-		},
-
-		allToImg: function(cols, rows, width, height, stepsCols, stepsRows){
-
-			var ret = new ImageData(width, height);
-			var size = height * width * 4;
-			var data = ret.data;
-
-			if (cols){
-
-				var currentCol = 0;
-				var row = 0;
-				var maxWidth = width / stepsCols;
-				var xStep = stepsCols * 4;
-				//console.log(cols);
-				for(var x = 0; x < size; x=x+xStep){
-					data[x  ] = cols[currentCol][row];
-					data[x+1] = cols[currentCol][row+1];
-					data[x+2] = cols[currentCol][row+2];
-					data[x+3] = 255;
-
-					currentCol++;
-					if (currentCol >= maxWidth){currentCol = 0; row++;}
-				}
-			}
-
-			if (rows){
-				var yStep = 4 * width * stepsRows;
-				var xStep = 4;
-				var xSize = width * 4;
-				var ySize = size;
-				var row = 0;
-				for(var y = 0; y < ySize; y = y + yStep){
-					var col = 0;
-					for(var x = 0; x < xSize; x = x + xStep){
-						var spot = x + y;
-						var val = Math.round(rows[row][col]/3);
-						data[spot    ] = rows[row][col];
-						data[spot + 1] = rows[row][col+1];
-						data[spot + 2] = rows[row][col+2];
-						data[spot + 3] = 255;
-						col=col+3;
-					}
-					row++;
-				}
-			}
-
-			if (cols || rows){
-				return ret;
-			}else{
-				return null;
-			}
-		}
-
-	},
+	// color: {
+  //
+	// 	//Takes imageData, imageData, and steps, and returns as many columns from that as
+	// 	//one can make with the width between them of steps.
+	// 	cols: function(imgDataA, steps) {
+	// 		if(!!imgDataA ){
+	// 			//Pulling misc data.
+	// 			var size = imgDataA.data.length;
+	// 			var width = imgDataA.width;
+	// 			var height = imgDataA.height;
+	// 			var dataA = imgDataA.data;
+  //
+	// 			//Vertical columns that we will attend to.
+	// 			//Build the array we will return.
+	// 			var cols = arrayOfFill( Math.ceil(width / steps) , function(){return []} );
+	// 			var currentCol = 0;
+	// 			var xStep = steps*4;
+	// 			var maxWidth = width / steps;
+	// 			for(var x = 0; x < size; x=x+xStep){
+	// 				var r = Math.abs(dataA[x  ]);
+	// 				var g = Math.abs(dataA[x+1]);
+	// 				var b = Math.abs(dataA[x+2]);
+	// 				cols[currentCol].push(r);
+	// 				cols[currentCol].push(g);
+	// 				cols[currentCol].push(b);
+	// 				currentCol++;
+	// 				if (currentCol >= maxWidth){currentCol = 0;}
+	// 			}
+	// 			//Returning it all.  Fix this later.
+	// 			return cols;
+	// 		}
+	// 		return null
+	// 	},
+  //
+	// 	//Takes imageData, imageData, and steps, and returns as many columns from that, greyscale, on a 0-765 scale, as
+	// 	//one can make with the width between them of steps.
+	// 	rows: function(imgDataA, steps){
+	// 		if(!!imgDataA){
+	// 			//Pulling misc data.
+	// 			var size = imgDataA.data.length;
+	// 			var width = imgDataA.width;
+	// 			var height = imgDataA.height;
+	// 			var dataA = imgDataA.data;
+  //
+	// 			//Vertical columns that we will attend to.
+	// 			//Build the array we will return.
+	// 			var rows = [];
+	// 			var currentRow = 0;
+  //
+	// 			//For the loop specifically.
+	// 			var xStep = 4;
+	// 			var yStep = steps*4*width;
+	// 			var xSize = width * 4;
+	// 			var ySize = size;
+  //
+	// 			for(var y = 0; y < ySize; y=y+yStep){
+	// 				rows.push([]);
+	// 				for(var x = 0; x < xSize; x=x+xStep){
+	// 					var spot = x + y;
+	// 					var r = Math.abs(dataA[spot  ] );
+	// 					var g = Math.abs(dataA[spot+1] );
+	// 					var b = Math.abs(dataA[spot+2] );
+	// 					rows[currentRow].push(r);
+	// 					rows[currentRow].push(g);
+	// 					rows[currentRow].push(b);
+	// 				}
+	// 				currentRow++;
+	// 			}
+	// 			//Returning it all.  Fix this later.
+	// 			return rows;
+	// 		}
+	// 		return null
+	// 	},
+  //
+	// 	allToImg: function(cols, rows, width, height, stepsCols, stepsRows){
+  //
+	// 		var ret = new ImageData(width, height);
+	// 		var size = height * width * 4;
+	// 		var data = ret.data;
+  //
+	// 		if (cols){
+  //
+	// 			var currentCol = 0;
+	// 			var row = 0;
+	// 			var maxWidth = width / stepsCols;
+	// 			var xStep = stepsCols * 4;
+	// 			//console.log(cols);
+	// 			for(var x = 0; x < size; x=x+xStep){
+	// 				data[x  ] = cols[currentCol][row];
+	// 				data[x+1] = cols[currentCol][row+1];
+	// 				data[x+2] = cols[currentCol][row+2];
+	// 				data[x+3] = 255;
+  //
+	// 				currentCol++;
+	// 				if (currentCol >= maxWidth){currentCol = 0; row++;}
+	// 			}
+	// 		}
+  //
+	// 		if (rows){
+	// 			var yStep = 4 * width * stepsRows;
+	// 			var xStep = 4;
+	// 			var xSize = width * 4;
+	// 			var ySize = size;
+	// 			var row = 0;
+	// 			for(var y = 0; y < ySize; y = y + yStep){
+	// 				var col = 0;
+	// 				for(var x = 0; x < xSize; x = x + xStep){
+	// 					var spot = x + y;
+	// 					var val = Math.round(rows[row][col]/3);
+	// 					data[spot    ] = rows[row][col];
+	// 					data[spot + 1] = rows[row][col+1];
+	// 					data[spot + 2] = rows[row][col+2];
+	// 					data[spot + 3] = 255;
+	// 					col=col+3;
+	// 				}
+	// 				row++;
+	// 			}
+	// 		}
+  //
+	// 		if (cols || rows){
+	// 			return ret;
+	// 		}else{
+	// 			return null;
+	// 		}
+	// 	}
+  //
+	// },
 
 
 	bw: {
@@ -424,5 +424,107 @@ var imgproc = {
 		}
 
 
-	}
+	},
+
+  bwSpin: {
+
+    turntable: function(imgDataA, sourceX, sourceY, length){
+			if(!!imgDataA){
+				//Pulling misc data.
+				// var size = imgDataA.data.length;
+				// var width = imgDataA.width;
+				// var height = imgDataA.height;
+				var dataA = imgDataA.data;
+
+				//Vertical columns that we will attend to.
+				//Build the array we will return.
+				// var cols = arrayOfFill( Math.ceil(width / steps) , function(){return []} );
+				// var currentCol = 0;
+				// var xStep = steps*4;
+				// var maxWidth = width / steps;
+        var line = []
+        var elementsInRow = 640 * 4; //640 pixels times 4 elements in the array for each pixel
+        var sourceInArray = (sourceX * 4) + (sourceY * elementsInRow);
+				for(var x = sourceInArray; x < sourceInArray + (length * 4); x+=4){
+					var r = dataA[x  ];
+					var g = dataA[x+1];
+					var b = dataA[x+2];
+					line.push(r+g+b);
+				}
+				//Returning it all.  Fix this later.
+				return line;
+			}
+			return null
+		},
+
+    allToImg: function(line, width, height){
+
+			var ret = new ImageData(width, height);
+			// var size = height * width * 4;
+			var data = ret.data;
+      // console.log("This is the ret inside allToImg: ", ret)
+
+			if (line){
+
+        var sourceX = 320;
+        var sourceY = 240;
+        var length = 120;
+				// var currentCol = 0;
+				// var row = 0;
+				// var maxWidth = width / stepsCols;
+				// var xStep = stepsCols * 4;
+
+        var elementsInRow = 640 * 4; //640 pixels times 4 elements in the array for each pixel
+        var sourceInArray = (sourceX * 4) + (sourceY * elementsInRow);
+				for(var x = 0; x < length * 4; x+=4) {
+					var val = Math.round(line[x] / 3);
+					data[sourceInArray + x  ] = val;
+					data[sourceInArray + x+1] = val;
+					data[sourceInArray + x+2] = val;
+					data[sourceInArray + x+3] = 255;
+
+					// currentCol++;
+					// if (currentCol >= maxWidth){currentCol = 0; row++;}
+				}
+        console.log("THE DATA:", [data[sourceInArray], data[sourceInArray + 1], data[sourceInArray + 2], data[sourceInArray + 3], data[sourceInArray + 4]])
+			}
+
+			if (line){
+				return ret;
+			}else{
+				return null;
+			}
+		},
+
+    diffArr: function(arrOne, arrTwo){
+			if(!!arrOne && !!arrTwo){
+				var ret = [];
+				var length = arrOne.length;
+				for(var x = 0; x < length; x++){
+					ret.push(Math.abs(arrOne[x]-arrTwo[x]));
+				}
+				return ret;
+				//Not using this, even though it is much less verbose and much more readable, because it is, damnably, also much slower.
+				// return deepCollapse(arrOne, arrTwo, function(a,b){
+				// 	return Math.abs(a-b);
+				// });
+			}
+		},
+
+    mask: function(mask, real, threshold){
+			if(!!mask && !!real){
+				var ret = [];
+				var length = mask.length;
+				for(var x = 0; x < length; x++){
+						ret.push((mask[x] > threshold) ? real[x] : 0);
+				}
+				return ret;
+				//See note below.
+				//return deepCollapse(mask, real, function(a,b){
+				//	return (a > threshold) ? b : 0;
+				//});
+			}
+		}
+
+  }
 }
