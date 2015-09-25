@@ -80,7 +80,7 @@ var imgproc = {
 				//return deepCollapse(mask, real, function(a,b){
 				//	return (a > threshold) ? b : 0;
 				//});
-			}	
+			}
 		},
 
 		diffArr: function(arrOne, arrTwo){
@@ -174,16 +174,16 @@ var imgproc = {
 
 	color: {
 
-		//Takes imageData, imageData, and steps, and returns as many columns from that as 
+		//Takes imageData, imageData, and steps, and returns as many columns from that as
 		//one can make with the width between them of steps.
-		cols: function(imgDataA, steps){
+		cols: function(imgDataA, steps) {
 			if(!!imgDataA ){
 				//Pulling misc data.
 				var size = imgDataA.data.length;
 				var width = imgDataA.width;
 				var height = imgDataA.height;
 				var dataA = imgDataA.data;
-				
+
 				//Vertical columns that we will attend to.
 				//Build the array we will return.
 				var cols = arrayOfFill( Math.ceil(width / steps) , function(){return []} );
@@ -206,7 +206,7 @@ var imgproc = {
 			return null
 		},
 
-		//Takes imageData, imageData, and steps, and returns as many columns from that, greyscale, on a 0-765 scale, as 
+		//Takes imageData, imageData, and steps, and returns as many columns from that, greyscale, on a 0-765 scale, as
 		//one can make with the width between them of steps.
 		rows: function(imgDataA, steps){
 			if(!!imgDataA){
@@ -215,7 +215,7 @@ var imgproc = {
 				var width = imgDataA.width;
 				var height = imgDataA.height;
 				var dataA = imgDataA.data;
-				
+
 				//Vertical columns that we will attend to.
 				//Build the array we will return.
 				var rows = [];
@@ -226,7 +226,7 @@ var imgproc = {
 				var yStep = steps*4*width;
 				var xSize = width * 4;
 				var ySize = size;
-				
+
 				for(var y = 0; y < ySize; y=y+yStep){
 					rows.push([]);
 					for(var x = 0; x < xSize; x=x+xStep){
@@ -253,7 +253,7 @@ var imgproc = {
 			var data = ret.data;
 
 			if (cols){
-				
+
 				var currentCol = 0;
 				var row = 0;
 				var maxWidth = width / stepsCols;
@@ -285,7 +285,7 @@ var imgproc = {
 						data[spot + 1] = rows[row][col+1];
 						data[spot + 2] = rows[row][col+2];
 						data[spot + 3] = 255;
-						col=col+3;	
+						col=col+3;
 					}
 					row++;
 				}
@@ -302,7 +302,7 @@ var imgproc = {
 
 
 	bw: {
-		//Takes imageData, imageData, and steps, and returns as many columns from that, greyscale, on a 0-765 scale, as 
+		//Takes imageData and steps, and returns as many columns from that, greyscale, on a 0-765 scale, as
 		//one can make with the width between them of steps.
 		cols: function(imgDataA, steps){
 			if(!!imgDataA){
@@ -311,7 +311,7 @@ var imgproc = {
 				var width = imgDataA.width;
 				var height = imgDataA.height;
 				var dataA = imgDataA.data;
-				
+
 				//Vertical columns that we will attend to.
 				//Build the array we will return.
 				var cols = arrayOfFill( Math.ceil(width / steps) , function(){return []} );
@@ -340,7 +340,7 @@ var imgproc = {
 				var width = imgDataA.width;
 				var height = imgDataA.height;
 				var dataA = imgDataA.data;
-				
+
 				//Vertical columns that we will attend to.
 				//Build the array we will return.
 				var rows = [];
@@ -351,7 +351,7 @@ var imgproc = {
 				var yStep = steps*4*width;
 				var xSize = width * 4;
 				var ySize = size;
-				
+
 				for(var y = 0; y < ySize; y=y+yStep){
 					rows.push([]);
 					for(var x = 0; x < xSize; x=x+xStep){
@@ -374,9 +374,10 @@ var imgproc = {
 			var ret = new ImageData(width, height);
 			var size = height * width * 4;
 			var data = ret.data;
+      // console.log("This is the ret inside allToImg: ", ret)
 
 			if (cols){
-				
+
 				var currentCol = 0;
 				var row = 0;
 				var maxWidth = width / stepsCols;
@@ -409,7 +410,7 @@ var imgproc = {
 						data[spot + 1] = val;
 						data[spot + 2] = val;
 						data[spot + 3] = 255;
-						col++;	
+						col++;
 					}
 					row++;
 				}

@@ -26,9 +26,9 @@ $(document).ready(function(){
 
 	var options = {
 		verbose: true,
-		interval: 35 //,
-		//showVideo: true,
-		//elementId: 'container'
+		interval: 35,
+		showVideo: true,
+		elementId: 'container'
 	};
 
 	var p = new Panopticon(options);
@@ -43,12 +43,9 @@ $(document).ready(function(){
 		//top--how much movement towards the top is in the frame
 		//twist--how much twistiness is in the frame
 
-		speedUp = speedUp + obj.top * .07;
-		speedUp = speedUp * .97; 
-		speedSide = speedSide + obj.left * .07;
-		speedSide = speedSide * .97;
-		rotateSpeed = rotateSpeed + obj.twist * .07;
-		rotateSpeed = rotateSpeed * 0.97
+		speedUp = speedUp + obj.top;
+		speedSide = speedSide + obj.left;
+		rotateSpeed = rotateSpeed + obj.twist;
 
 		top = top + speedUp;
 		side = side + speedSide;
@@ -62,9 +59,46 @@ $(document).ready(function(){
 		document.getElementById("temp").style.top = top+"px";
 		document.getElementById("temp").style.left = side+"px";
 		document.getElementById("temp").style.transform = "rotate("+Math.round(rotate)+"deg)";
-			
+
 
 	}
+
+	var playingBlankSpace = false;
+	$(document).keypress(function(e) {
+		var tSwiftBlankSpace = document.getElementById('tSwiftBlankSpace');
+		if(e.which == 13) {
+			if(!playingBlankSpace) {
+				tSwiftBlankSpace.play();
+				playingBlankSpace = true;
+			} else {
+				tSwiftBlankSpace.pause();
+				playingBlankSpace = false;
+			};
+		};
+	});
+	var playingStyle = false;
+	$(document).keypress(function(e) {
+		var tSwiftStyle = document.getElementById('tSwiftStyle');
+		if(e.which == 97) {
+			if(!playingStyle) {
+				tSwiftStyle.play();
+				playingStyle = true;
+			} else {
+				tSwiftStyle.pause();
+				playingStyle = false;
+			};
+		};
+	});
+	$(document).keypress(function(e) {
+		var scratch = document.getElementById('scratch');
+		if(e.which == 98) {
+			tSwiftStyle.pause();
+			scratch.play();
+			setTimeout(function() {
+				tSwiftStyle.play();
+			}, 700)
+		};
+	});
 
 });
 
@@ -72,8 +106,19 @@ $(document).ready(function(){
 <style>
 </style>
 </head>
-  
+
 <body>
+
+<div>
+	<audio id="tSwiftBlankSpace" src='/audio/blankSpace.mp3' controls></audio>
+</div>
+<div>
+	<audio id="tSwiftStyle" src='/audio/style.mp3' controls></audio>
+</div>
+<div>
+	<audio id="scratch" src='/audio/recordScratch.mp3' controls></audio>
+</div>
+
 <canvas id="container">
 </canvas>
 

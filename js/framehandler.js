@@ -8,17 +8,17 @@ function FrameHandler(options){
 	var self = this;
 	var interval = options.interval || 50;
 
-	//var container = document.getElementById(id);
+	// var container = document.getElementById(options.elementId);
 	var video = document.createElement('video');
 	var hiddenCanvas = document.createElement('canvas');
-	//var visibleCanvas = document.createElement('canvas');
+	// var visibleCanvas = document.createElement('canvas');
 	var hiddenContext = hiddenCanvas.getContext('2d');
-	//var visibleContext = visibleCanvas.getContext('2d');
+	// var visibleContext = visibleCanvas.getContext('2d');
 
 	//video.id = id + '_video';
 	video.autoplay = 'true';
 	//hiddenCanvas.id = id + '_hiddenCanvas';
-	//visibleCanvas.id = id + '_visibleCanvas';
+	// visibleCanvas.id = id + '_visibleCanvas';
 
 	var initialized = false;
 	var vHeight, vWidth;
@@ -26,10 +26,11 @@ function FrameHandler(options){
 	var times = 0;
 	var time = 0;
 
-	//if (options.showVideo){ container.appendChild(visibleCanvas) };
+	// if (options.showVideo){ container.appendChild(visibleCanvas) };
 
 	var handleVideo = function(stream){
 		video.src =  window.URL.createObjectURL(stream);
+		console.log("Camera data: ", video.src);
 	}
 
 	var videoError = function(err){
@@ -43,16 +44,22 @@ function FrameHandler(options){
 		    hiddenCanvas.width = vWidth;
 		    hiddenCanvas.height = vHeight;
 		    //size = vHeight * vWidth * 4;
-		    //visibleCanvas.width = vWidth;
-		    //visibleCanvas.height = vHeight;
+		    // visibleCanvas.width = vWidth;
+		    // visibleCanvas.height = vHeight;
 		    initialized = true;
-		    
+
 		}
 	}
 
+	//Create a stopping point for testing to retrieve data
+	var numberIterations = 0;
 
+	var intervalId = window.setInterval(function(){
 
-	window.setInterval(function(){
+		//add one to iteration after each time this function has been run
+		numberIterations++;
+		//stop running this function after 200 iterations
+		if(numberIterations > 100) window.clearInterval(intervalId);
 
 		//Get epoch time in ms when we start going through, if doing verbose logging.
 		if(options.verbose){ time = new Date().getTime(); }
@@ -63,13 +70,14 @@ function FrameHandler(options){
 		//Draw the image and put it into the img variable.
 		hiddenContext.drawImage(video, 0,0, vWidth, vHeight);
 		var img = hiddenContext.getImageData( 0, 0,vWidth, vHeight);
+		console.log("This is the video data: ", img)
 
 		for(var x = 0; x < self.onFrames.length; x++){
 		 	self.onFrames[x](img);
 		}
 
 		//If we want to show the video, show it.
-		//if (options.showVideo) { visibleContext.putImageData(img, 0,0); }
+		// if (options.showVideo) { visibleContext.putImageData(img, 0,0); }
 
 		//Calculate average time for each calculation, if doing verbose logging.
 		if(options.verbose){
@@ -77,18 +85,17 @@ function FrameHandler(options){
 			total = total + difference;
 			times++;
 			var average = total / times;
-			console.log(average);
+			console.log("average time for each calculation: ", average);
 		}
-
 
 	}, interval);
 
 
 	//Boilerplate for different browsers.  So bad.
-	var nav = navigator.getUserMedia = navigator.getUserMedia || 
+	var nav = navigator.getUserMedia = navigator.getUserMedia ||
 										navigator.webkitGetUserMedia ||
-										navigator.mozGetUserMedia || 
-										navigator.msGetUserMedia || 
+										navigator.mozGetUserMedia ||
+										navigator.msGetUserMedia ||
 										navigator.oGetUserMedia;
 
 	//Call everything which has been prepared above.

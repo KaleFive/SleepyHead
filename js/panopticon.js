@@ -1,5 +1,3 @@
-
-var deepMap = function(arr, func){return arr.map(function(n){return Array.isArray(n) ? deepMap(n, func) : func(n); });};
 var deepCopy = function(arr) {if(arr){return deepMap(arr, function(n){return n});}return null}
 var average = function(arr){if (arr) { return arr.reduce(function(a,b){return a + b}, 0) / arr.length;} return null; }
 var sizeOfLarger = function(arr, size) { return arr.filter(function(n){return n > size;}).length; }
@@ -17,7 +15,7 @@ function Panopticon(options){
 			return;
 		}
 		var movement = self.getMovementObject(img);
-		self.onFrames.map(function(func){func(movement);});
+		self.onFrames.forEach(function(func){func(movement);});
 	});
 }
 
@@ -27,13 +25,13 @@ Panopticon.prototype.onFrame = function(func){
 
 Panopticon.prototype.setAlphaSettings = function(options){
 
-	//Have no yet done beta initialization.
+	//Have not yet done beta initialization.
 	this.betaInitialized = false;
 
 	//How many columns do we want to examine?
 	this.numCols = options.numCols || 36;
 	this.numRows = options.numRows || 24;
-	
+
 	//How many of these columns do we want to require to be moving before anything moves.
 	this.requiredCols = options.requiredCols || 12;
 	this.requiredRows = options.requiredRows || 8;
@@ -95,13 +93,14 @@ Panopticon.prototype.getMovementObject = function(img){
 		left: avShiftSide,
 		twist: twist
 	}
+	// console.log("MOVEMENT OBJ: ", movementObj)
 
 	this.oldImportantColumns = deepCopy(importantColumns);
 	this.oldImportantRows = deepCopy(importantRows);
 	this.oldSelectedColumns = deepCopy(selectedColumns);
 	this.oldSelectedRows = deepCopy(selectedRows);
 
-	//if (this.showVideo){return imgproc.refl(img);}
+	// if (this.showVideo){return imgproc.generic.refl(img);}
 	if (this.showVideo){
 		var temp = document.getElementById(this.elementId);
 		temp.width = img.width;
@@ -113,4 +112,3 @@ Panopticon.prototype.getMovementObject = function(img){
 
 	return movementObj;
 };
-
