@@ -468,7 +468,7 @@ var imgproc = {
 
         var sourceX = 320;
         var sourceY = 240;
-        var length = 120;
+        var length = 240;
 				// var currentCol = 0;
 				// var row = 0;
 				// var maxWidth = width / stepsCols;
@@ -486,7 +486,7 @@ var imgproc = {
 					// currentCol++;
 					// if (currentCol >= maxWidth){currentCol = 0; row++;}
 				}
-        console.log("THE DATA:", [data[sourceInArray], data[sourceInArray + 1], data[sourceInArray + 2], data[sourceInArray + 3], data[sourceInArray + 4]])
+        // console.log("THE DATA:", [data[sourceInArray], data[sourceInArray + 1], data[sourceInArray + 2], data[sourceInArray + 3], data[sourceInArray + 4]])
 			}
 
 			if (line){
@@ -511,6 +511,22 @@ var imgproc = {
 			}
 		},
 
+    presenceArr: function(arrOne){
+			if(!!arrOne){
+				var ret = [];
+				var length = arrOne.length;
+				for(var x = 0; x < length; x++){
+          if(arrOne[x] > 50) ret.push(255)
+					else ret.push(0);
+				}
+				return ret;
+				//Not using this, even though it is much less verbose and much more readable, because it is, damnably, also much slower.
+				// return deepCollapse(arrOne, arrTwo, function(a,b){
+				// 	return Math.abs(a-b);
+				// });
+			}
+		},
+
     mask: function(mask, real, threshold){
 			if(!!mask && !!real){
 				var ret = [];
@@ -526,5 +542,7 @@ var imgproc = {
 			}
 		}
 
-  }
+  }, //end of bwSpin
+
+  
 }

@@ -63,47 +63,65 @@ Panopticon.prototype.setBetaSettings = function(img){
 };
 
 Panopticon.prototype.getMovementObject = function(img){
+
+	//convert an image to an array of 'hit' or 'miss'
+	var imageToArray = imgprocConvertToArray.convert(img)
+
 	//Reduce the resolution for both columns and for the rows.
-	var selectedColumns = imgproc.bw.cols(img, this.columnSpacing);
-	var selectedRows = imgproc.bw.rows(img, this.rowSpacing);
-	var selectedLine = imgproc.bwSpin.turntable(img, 320, 240, 120);
+	var blackScreenPull = imgprocBlackScreen.pullImage(img, 640, 320);
+	var blackScreenWithMovement = imgprocDetectMovement.perimeter(blackScreenPull, this.oldBlackScreenPull)
+	var blackScreenPush = imgprocBlackScreen.pushImage(blackScreenWithMovement);
 
-	var diffColumns = imgproc.generic.diffArr(selectedColumns, this.oldSelectedColumns);
-	var diffRows = imgproc.generic.diffArr(selectedRows, this.oldSelectedRows);
-	var diffLine = imgproc.bwSpin.diffArr(selectedLine, this.oldSelectedLine);
+	// var pillarPull = imgprocPillar.bwPillar.pillar(img);
+	// var pillarPush = imgprocPillar.bwPillar.allToImg(pillarPull);
 
-	var importantColumns = imgproc.generic.mask(diffColumns, selectedColumns, this.threshhold)
-	var importantRows = imgproc.generic.mask(diffRows, selectedRows, this.threshhold)
-	var importantLine = imgproc.bwSpin.mask(diffLine, selectedLine, this.threshhold)
-	console.log("IMPORTANT LINE: ", importantLine)
+	// var squarePull = imgprocSquare.bwSquare.square(img, 320);
+	// var squarePush = imgprocSquare.bwSquare.allToImg(squarePull, 320);
+
+	// var selectedColumns = imgproc.bw.cols(img, this.columnSpacing);
+	// var selectedRows = imgproc.bw.rows(img, this.rowSpacing);
+	// var selectedLine = imgproc.bwSpin.turntable(img, 320, 240, 240);
+
+	// var diffColumns = imgproc.generic.diffArr(selectedColumns, this.oldSelectedColumns);
+	// var diffRows = imgproc.generic.diffArr(selectedRows, this.oldSelectedRows);
+	// var diffLine = imgproc.bwSpin.diffArr(selectedLine, this.oldSelectedLine);
+
+	// var presenceLine = imgproc.bwSpin.presenceArr(selectedLine);
+	// console.log("THIS IS THE PRESSENCE LINE: ", presenceLine)
+
+	// var importantColumns = imgproc.generic.mask(diffColumns, selectedColumns, this.threshhold)
+	// var importantRows = imgproc.generic.mask(diffRows, selectedRows, this.threshhold)
+	// var importantLine = imgproc.bwSpin.mask(diffLine, selectedLine, this.threshhold)
+	// var importantLine = imgproc.bwSpin.mask(presenceLine, selectedLine, this.threshhold)
 	//Get the differences for the columns
-	if(importantColumns && this.oldImportantColumns){
-		var shiftUp = imgproc.generic.shiftedArr(importantColumns, this.oldImportantColumns, this.biggestMovement, this.stepSearchSize, this.dampening);
-		var avShiftUp = imgproc.generic.chunkify(shiftUp, this.requiredCols, this.minimumNoticedScrollDistance);
-
-		var shiftSide = imgproc.generic.shiftedArr(importantRows, this.oldImportantRows, this.biggestMovement, this.stepSearchSize, this.dampening);
-		var avShiftSide = imgproc.generic.chunkify(shiftSide, this.requiredRows, this.minimumNoticedScrollDistance);
-	}
+	// if(importantColumns && this.oldImportantColumns){
+	// 	var shiftUp = imgproc.generic.shiftedArr(importantColumns, this.oldImportantColumns, this.biggestMovement, this.stepSearchSize, this.dampening);
+	// 	var avShiftUp = imgproc.generic.chunkify(shiftUp, this.requiredCols, this.minimumNoticedScrollDistance);
+	//
+	// 	var shiftSide = imgproc.generic.shiftedArr(importantRows, this.oldImportantRows, this.biggestMovement, this.stepSearchSize, this.dampening);
+	// 	var avShiftSide = imgproc.generic.chunkify(shiftSide, this.requiredRows, this.minimumNoticedScrollDistance);
+	// }
 	// var twistHoriz = -imgproc.generic.twistify(shiftSide, Math.round(this.requiredRows/2), this.minimumNoticedScrollDistance/2);
 	// var twistVert = imgproc.generic.twistify(shiftUp, Math.round(this.requiredCols/2), this.minimumNoticedScrollDistance/2);
 	// var twist = twistVert + twistHoriz
 
-	if(!avShiftUp){avShiftUp = 0;}
-	if(!avShiftSide){avShiftSide = 0;}
+	// if(!avShiftUp){avShiftUp = 0;}
+	// if(!avShiftSide){avShiftSide = 0;}
 	// if(!twist){twist = 0;}
 
-	var movementObj = {
-		top: -avShiftUp,
-		left: avShiftSide,
+	// var movementObj = {
+	// 	top: -avShiftUp,
+	// 	left: avShiftSide,
 		// twist: twist
-	}
+	// }
 	// console.log("MOVEMENT OBJ: ", movementObj)
 
-	this.oldImportantColumns = deepCopy(importantColumns);
-	this.oldImportantRows = deepCopy(importantRows);
-	this.oldSelectedColumns = deepCopy(selectedColumns);
-	this.oldSelectedRows = deepCopy(selectedRows);
-	this.oldSelectedLine = deepCopy(selectedLine);
+	// this.oldImportantColumns = deepCopy(importantColumns);
+	// this.oldImportantRows = deepCopy(importantRows);
+	// this.oldSelectedColumns = deepCopy(selectedColumns);
+	// this.oldSelectedRows = deepCopy(selectedRows);
+	// this.oldSelectedLine = deepCopy(selectedLine);
+	this.oldBlackScreenPull = deepCopy(blackScreenPull);
 
 	// if (this.showVideo){return imgproc.generic.refl(img);}
 	if (this.showVideo){
@@ -112,9 +130,10 @@ Panopticon.prototype.getMovementObject = function(img){
 		temp.height = img.height;
 		var context = temp.getContext('2d')
 		// var videoFrame = imgproc.bw.allToImg(importantColumns, importantRows, img.width, img.height, this.columnSpacing, this.rowSpacing);
-		var videoFrame2 = imgproc.bwSpin.allToImg(importantLine, img.width, img.height);
-		context.putImageData(videoFrame2,0,0);
+		// var videoFrame2 = imgproc.bwSpin.allToImg(importantLine, img.width, img.height);
+		context.putImageData(blackScreenPush,0,0);
 	}
+	return imageToArray;
 
-	return movementObj;
+	// return movementObj;
 };

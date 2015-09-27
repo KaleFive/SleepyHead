@@ -9,100 +9,16 @@
 <title>Display Webcam Stream</title>
 <script src="js/framehandler.js"></script>
 <script src="js/imgproc.js"></script>
+<script src="js/imgprocConvertToArray.js"></script>
+<script src="js/imgprocDetectMovement.js"></script>
+<script src="js/imgprocBlackScreen.js"></script>
+<script src="js/imgprocPillar.js"></script>
+<script src="js/imgprocSquare.js"></script>
 <script src="js/panopticon.js"></script>
 <script src="js/jquery.js"></script>
-<script>
+<script src="js/initiatePanopticon.js"></script>
+<script src="js/defineJqueryAudio.js"></script>
 
-$(document).ready(function(){
-
-	var top = 200;
-	var side = 600;
-	var rotate = 0;
-
-	var speedUp = 0;
-	var speedSide = 0;
-	var rotateSpeed = 0;
-
-
-	var options = {
-		verbose: true,
-		interval: 35,
-		showVideo: true,
-		elementId: 'container'
-	};
-
-	var p = new Panopticon(options);
-
-	p.onFrame(moveBallAround);
-
-	function moveBallAround(obj){
-
-		//obj has three properties
-		//
-		//left--how much movement left is in the frame
-		//top--how much movement towards the top is in the frame
-		//twist--how much twistiness is in the frame
-
-		speedUp = speedUp + obj.top * .07;
-		speedSide = speedSide + obj.left * .07;
-		// rotateSpeed = rotateSpeed + obj.twist * .07;
-
-		top = top + speedUp;
-		side = side + speedSide;
-		// rotate = rotate + rotateSpeed;
-
-		if (top < 0){top = 0;}
-		if (top > 560){top = 560;}
-		if (side < 0){side=0;}
-		if (side > 1180){side = 1180}
-
-		// document.getElementById("temp").style.top = top+"px";
-		// document.getElementById("temp").style.left = side+"px";
-		// document.getElementById("temp").style.transform = "rotate("+Math.round(rotate)+"deg)";
-
-
-	}
-
-	var playingBlankSpace = false;
-	$(document).keypress(function(e) {
-		var tSwiftBlankSpace = document.getElementById('tSwiftBlankSpace');
-		if(e.which == 13) {
-			if(!playingBlankSpace) {
-				tSwiftBlankSpace.play();
-				playingBlankSpace = true;
-			} else {
-				tSwiftBlankSpace.pause();
-				playingBlankSpace = false;
-			};
-		};
-	});
-	var playingStyle = false;
-	$(document).keypress(function(e) {
-		var tSwiftStyle = document.getElementById('tSwiftStyle');
-		if(e.which == 97) {
-			if(!playingStyle) {
-				tSwiftStyle.play();
-				playingStyle = true;
-			} else {
-				tSwiftStyle.pause();
-				playingStyle = false;
-			};
-		};
-	});
-	$(document).keypress(function(e) {
-		var scratch = document.getElementById('scratch');
-		if(e.which == 98) {
-			tSwiftStyle.pause();
-			scratch.play();
-			setTimeout(function() {
-				tSwiftStyle.play();
-			}, 700)
-		};
-	});
-
-});
-
-</script>
 <style>
 </style>
 </head>
@@ -116,7 +32,7 @@ $(document).ready(function(){
 	<audio id="tSwiftStyle" src='/audio/style.mp3' controls></audio>
 </div>
 <div>
-	<audio id="scratch" src='/audio/recordScratch.mp3' controls></audio>
+	<audio id="scratch" src='/audio/ak47.mp3' controls></audio>
 </div>
 
 <canvas id="container">

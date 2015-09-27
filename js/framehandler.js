@@ -6,7 +6,7 @@ function FrameHandler(options){
 
 	this.onFrames = [];
 	var self = this;
-	var interval = options.interval || 50;
+	var interval = options.interval || 20;
 
 	// var container = document.getElementById(options.elementId);
 	var video = document.createElement('video');
@@ -59,7 +59,7 @@ function FrameHandler(options){
 		//add one to iteration after each time this function has been run
 		numberIterations++;
 		//stop running this function after 200 iterations
-		if(numberIterations > 2000) window.clearInterval(intervalId);
+		// if(numberIterations > 300) window.clearInterval(intervalId);
 
 		//Get epoch time in ms when we start going through, if doing verbose logging.
 		if(options.verbose){ time = new Date().getTime(); }
@@ -70,7 +70,8 @@ function FrameHandler(options){
 		//Draw the image and put it into the img variable.
 		hiddenContext.drawImage(video, 0,0, vWidth, vHeight);
 		var img = hiddenContext.getImageData( 0, 0,vWidth, vHeight);
-		console.log("This is the video data: ", img)
+
+		//copy only the pixels that I need and set them to img
 
 		for(var x = 0; x < self.onFrames.length; x++){
 		 	self.onFrames[x](img);
